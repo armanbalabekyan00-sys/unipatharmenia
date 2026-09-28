@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#071b3a">
+    <meta name="description" content="{{ page_description }}">
+    <meta name="keywords" content="study abroad, international universities, overseas study, university applications, UniPath">
+    {% if private_page %}<meta name="robots" content="noindex, nofollow">{% endif %}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="UniPath">
+    <meta property="og:title" content="{{ page_title }} | UniPath">
+    <meta property="og:description" content="{{ page_description }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title }} | UniPath">
+    <meta name="twitter:description" content="{{ page_description }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="icon" href="/images/unipath-symbol.webp" type="image/webp">
+    <link rel="preload" as="image" type="image/avif" href="/images/unipath-symbol.avif">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}?v=python-1">
+    <script src="{{ url_for('static', filename='js/site.js') }}?v=python-1" defer></script>
+    <title>{{ page_title }} | UniPath</title>
+</head>

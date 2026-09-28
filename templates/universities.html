@@ -1,0 +1,134 @@
+{% include '_head.html' %}
+<body>
+{% include '_nav.html' %}
+<main class="universities-page">
+    <form id="directory-filter-form" action="/universities" method="get">
+    <section class="search-hero">
+        <div class="page-shell">
+            <div class="section-kicker">UNIVERSITIES &amp; PROGRAMS · {{ destinationCount }} COUNTRIES</div>
+            <h1>Explore universities abroad.</h1>
+            <p>Search by course, country, degree and tuition. Save universities to compare later.</p>
+            <div class="directory-tools">
+                <label class="search-box">
+                    <input type="search" id="uni-search" name="q" placeholder="University, program, or field" aria-label="Search universities and programs" value="{{ query }}">
+                </label>
+                <label class="filter-box">
+                    <select id="uni-filter" name="country" aria-label="Country">
+                        <option value="all"{% if selectedCountry == 'all' %} selected{% endif %}>Any country</option>
+                        {% for destination in destinations %}<option value="{{ destination.slug }}"{% if selectedCountry == destination.slug %} selected{% endif %}>{{ destination.name }}</option>{% endfor %}
+                    </select>
+                </label>
+                <label class="filter-box">
+                    <select id="degree-filter" name="degree" aria-label="Degree">
+                        <option value=""{% if selectedDegree == '' %} selected{% endif %}>Any degree</option>
+                        <option value="Bachelor's"{% if bachelorSelected %} selected{% endif %}>Bachelor's</option>
+                        <option value="Master's"{% if masterSelected %} selected{% endif %}>Master's</option>
+                        <option value="PhD"{% if selectedDegree == 'PhD' %} selected{% endif %}>PhD</option>
+                    </select>
+                </label>
+                <label class="filter-box">
+                    <select id="field-filter" name="field" aria-label="Field of study">
+                        <option value=""{% if selectedField == '' %} selected{% endif %}>Any field</option>
+                        <option value="Computer science"{% if selectedField == 'Computer science' %} selected{% endif %}>Computer science</option>
+                        <option value="Business"{% if selectedField == 'Business' %} selected{% endif %}>Business</option>
+                        <option value="Engineering"{% if selectedField == 'Engineering' %} selected{% endif %}>Engineering</option>
+                        <option value="Arts & humanities"{% if selectedField == 'Arts & humanities' %} selected{% endif %}>Arts &amp; humanities</option>
+                        <option value="Medicine"{% if selectedField == 'Medicine' %} selected{% endif %}>Medicine</option>
+                    </select>
+                </label>
+                <button class="search-submit" id="program-search-button" type="submit">Search →</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="directory page-shell">
+        <div class="program-browser">
+            <aside class="filter-sidebar" aria-label="Additional program filters">
+                <div class="filter-sidebar-head">
+                    <h2>Filters</h2>
+                    <button id="reset-filters" type="button">Reset</button>
+                </div>
+                <fieldset>
+                    <legend>Study mode</legend>
+                    <label><input type="radio" name="mode" value="all"{% if selectedMode == 'all' %} checked{% endif %}> Any mode</label>
+                    <label><input type="radio" name="mode" value="Full-time"{% if selectedMode == 'Full-time' %} checked{% endif %}> Full-time</label>
+                    <label><input type="radio" name="mode" value="Part-time"{% if selectedMode == 'Part-time' %} checked{% endif %}> Part-time</label>
+                </fieldset>
+                <fieldset>
+                    <legend>Annual tuition (USD)</legend>
+                    <div class="fee-range">
+                        <label class="visually-hidden" for="min-fee">Minimum annual tuition in USD</label>
+                        <input id="min-fee" name="minFee" type="number" min="0" step="1000" placeholder="Minimum" value="{{ minFee if minFee is not none else '' }}">
+                        <label class="visually-hidden" for="max-fee">Maximum annual tuition in USD</label>
+                        <input id="max-fee" name="maxFee" type="number" min="0" step="1000" placeholder="Maximum" value="{{ maxFee if maxFee is not none else '' }}">
+                    </div>
+                    <small>Shown per academic year.</small>
+                </fieldset>
+                <fieldset>
+                    <legend>Funding</legend>
+                    <label><input id="scholarship-only" name="scholarship" value="true" type="checkbox"{% if scholarshipOnly %} checked{% endif %}> Scholarship opportunities</label>
+                </fieldset>
+            </aside>
+
+            <div class="program-results">
+                <div class="directory-results-head">
+                    <span class="results-count">{{ programCount ~ ' programs found' }}</span>
+                    <label>Sort by
+                        <select id="uni-sort" name="sort">
+                            <option value="relevance"{% if selectedSort == 'relevance' %} selected{% endif %}>Relevance</option>
+                            <option value="name"{% if selectedSort == 'name' %} selected{% endif %}>University name</option>
+                            <option value="tuition-low"{% if selectedSort == 'tuition-low' %} selected{% endif %}>Lowest tuition</option>
+                            <option value="tuition-high"{% if selectedSort == 'tuition-high' %} selected{% endif %}>Highest tuition</option>
+                        </select>
+                    </label>
+                </div>
+                <p class="popular-program-note">This directory is a starting point with some of the most popular study areas. We can explore other programs with you during a guidance session.</p>
+                <p class="tuition-disclaimer">Course names and fees are examples for comparison. Check the university’s official page for current information.</p>
+                <div class="form-response favorite-response" id="favorite-status" role="status" aria-live="polite"></div>
+
+                <div class="directory-list" id="directory-list">
+                    {% for program in programs %}<article class="program-card" id="{{ program.slug }}">
+                        <div class="program-logo">
+                            <img alt="" aria-hidden="true" loading="lazy" decoding="async" width="36" height="36" data-logo-fallback src="https://www.google.com/s2/favicons?domain={{ program.domain }}&amp;sz=128">
+                            <span hidden>{{ (program.university)[:1] }}</span>
+                        </div>
+                        <div class="program-main">
+                            <div class="program-university">{{ program.university }}</div>
+                            <h2><a class="program-title-link" href="/programs/{{ program.slug }}">{{ program.degree }} {{ program.title }}</a></h2>
+                            <p class="program-location">{{ program.city }}, {{ program.country }}</p>
+                            <div class="program-facts">
+                                <span>{{ program.duration }}</span>
+                                <span>{{ program.mode }}</span>
+                                <span>~${{ format_number(program.annualTuitionUsd) }} / year</span>
+                            </div>
+                            <div class="tag-row">
+                                <span>{{ program.field }}</span>
+                                {% for tag in program.tags.split(' · ') %}<span>{{ tag }}</span>{% endfor %}
+                            </div>
+                            <p class="program-description">{{ program.description }}</p>
+                            <div class="program-card-bottom">
+                                {% if program.scholarship %}<span class="scholarship-label">Scholarship opportunities may be available</span>{% endif %}
+                                {% if not (program.scholarship) %}<span class="funding-unavailable">Check university funding options</span>{% endif %}
+                                <div class="directory-actions">
+                                    <button class="favorite-button" type="button" aria-pressed="false" data-favorite="{{ program.universitySlug }}" data-university="{{ program.university }}">♡ Save university</button>
+                                    <a class="text-link" href="/programs/{{ program.slug }}">Program details →</a>
+                                    <a class="official-link" target="_blank" rel="noopener noreferrer" href="{{ program.officialUrl }}">University site ↗</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>{% endfor %}
+                </div>
+                {% if programCount == 0 %}<div class="empty-state">No programs match these filters. Try widening your search.</div>{% endif %}
+                {% if pageCount > 1 %}<nav class="program-pagination" aria-label="Program result pages">
+                    {% if previousPageUrl is not none %}<a class="pagination-link" href="{{ previousPageUrl }}">← Previous</a>{% endif %}
+                    <span>Page {{ currentPage }} of {{ pageCount }}</span>
+                    {% if nextPageUrl is not none %}<a class="pagination-link" href="{{ nextPageUrl }}">Next →</a>{% endif %}
+                </nav>{% endif %}
+            </div>
+        </div>
+    </section>
+    </form>
+</main>
+{% include '_footer.html' %}{% include '_chat.html' %}
+</body>
+</html>

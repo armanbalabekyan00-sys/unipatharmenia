@@ -1,0 +1,27 @@
+{% include '_head.html' %}
+<body class="admin-page">
+<a class="admin-back" href="/">← UniPath home</a>
+<main class="admin-shell">
+    <section class="admin-login-card" id="admin-login-card">
+        <div class="section-kicker">PRIVATE TEAM AREA</div>
+        <h1>UniPath admin</h1>
+        <p class="muted">Sign in with the server’s configured administrator password to review contact and booking requests.</p>
+        <form id="admin-login-form" class="auth-form">
+            <label>Admin password<input name="password" type="password" autocomplete="current-password" required></label>
+            <p class="form-response" id="admin-login-status" role="status" aria-live="polite"></p>
+            <button class="button" type="submit">Sign in to admin →</button>
+        </form>
+    </section>
+    <section id="admin-dashboard" hidden>
+        <div class="admin-dashboard-head"><div><div class="section-kicker">TEAM WORKSPACE</div><h1>Inbox &amp; activity</h1></div><button class="button button-outline" id="admin-logout" type="button">Sign out</button></div>
+        <div class="admin-stats" id="admin-stats"></div>
+        <h2>Latest messages and guidance requests</h2>
+        <p class="muted">Review student accounts and reply to chat-button conversations here. Email replies need SMTP; chat replies appear in the visitor’s chat.</p>
+        <h2>Student accounts</h2><div class="admin-users-wrap"><table class="admin-users"><thead><tr><th>Student</th><th>Study goals</th><th>Shortlist</th><th>Joined</th></tr></thead><tbody id="admin-users"><tr><td colspan="4">Loading accounts…</td></tr></tbody></table></div>
+        <h2>Website chat conversations</h2><div class="admin-chats" id="admin-chats"><p class="muted">Loading chats…</p></div>
+        <h2>Contact messages and guidance requests</h2>
+        <div class="admin-inquiries" id="admin-inquiries"><p class="muted">Loading messages…</p></div>
+    </section>
+</main>
+{% include '_chat.html' %}</body>
+</html>

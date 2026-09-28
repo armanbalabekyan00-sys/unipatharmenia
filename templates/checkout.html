@@ -1,0 +1,93 @@
+{% include '_head.html' %}
+<body class="checkout-page">
+    <header class="checkout-header">
+        <a class="brand" href="/">
+            <img src="/images/unipath-symbol.webp" alt="" width="36" height="36">
+            <span>UniPath</span>
+        </a>
+        <span class="secure-label">🔒 Secure booking · No payment taken</span>
+    </header>
+
+    <main class="checkout-layout">
+        <section class="checkout-form-card">
+            <a class="text-link" href="/services">← Back to services</a>
+            <div class="section-kicker checkout-kicker">RESERVE YOUR GUIDANCE</div>
+            <h1>Request your guidance package.</h1>
+            <p>Share your contact details and the UniPath team will get in touch to confirm your selected guidance package. This demo does not charge your card.</p>
+
+            <form class="checkout-form" id="booking-form" novalidate>
+                <h2><span>1</span>Your details</h2>
+                <div class="checkout-row">
+                    <label>First name
+                        <input name="firstName" autocomplete="given-name" required maxlength="60" placeholder="Your first name">
+                    </label>
+                    <label>Last name
+                        <input name="lastName" autocomplete="family-name" required maxlength="60" placeholder="Your last name">
+                    </label>
+                </div>
+                <label>Email address
+                    <input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
+                </label>
+                <label>Promo code
+                    <input name="promoCode" autocomplete="off" maxlength="30" placeholder="Enter a UniPath promo code">
+                </label>
+                <button class="button button-outline promo-apply" id="apply-promo" type="button">Apply promo code</button>
+                <p class="promo-response" id="promo-status" role="status" aria-live="polite"></p>
+                <label>Country you plan to study in
+                    <select name="destination" required>
+                        <option value="">Choose a destination</option>
+                        <option>United Kingdom</option>
+                        <option>United States</option>
+                        <option>Germany</option>
+                        <option>Italy</option>
+                        <option>Canada</option>
+                        <option>Australia</option>
+                        <option>Netherlands</option>
+                        <option>France</option>
+                        
+                        <option>Singapore</option>
+                        <option>Other</option>
+                    </select>
+                </label>
+
+                <h2><span>2</span>Card details for your records</h2>
+                <p class="muted">Demo only: card information is checked in your browser and is never sent, stored, or charged.</p>
+                <label>Card number
+                    <input name="cardNumber" inputmode="numeric" autocomplete="cc-number" required placeholder="1234 5678 9012 3456" maxlength="23">
+                </label>
+                <div class="checkout-row">
+                    <label>Expiry date
+                        <input name="expiry" autocomplete="cc-exp" required placeholder="MM / YY" maxlength="7">
+                    </label>
+                    <label>Security code
+                        <input name="cvc" inputmode="numeric" autocomplete="cc-csc" required placeholder="CVC" maxlength="4">
+                    </label>
+                </div>
+                <p class="form-response" id="booking-status" role="status" aria-live="polite"></p>
+                <button class="button" type="submit">Reserve my guidance →</button>
+            </form>
+
+            <div class="checkout-success" id="booking-success" hidden>
+                <h2>Request received.</h2>
+                <p data-booking-message>We’ll contact you soon to confirm the next steps. No money was taken.</p>
+                <a class="button" href="/account">Manage your UniPath account →</a>
+            </div>
+        </section>
+
+        <aside class="checkout-summary">
+            <div class="section-kicker">YOUR SELECTED PACKAGE</div>
+            <h2 id="checkout-plan-title">Application Guidance</h2>
+            <p>Personal support to help you take a confident next step toward international study.</p>
+            <ul>
+                <li>Personalized guidance</li>
+                <li>Clear application roadmap</li>
+                <li>International university focus</li>
+                <li>Support from the UniPath team</li>
+            </ul>
+            <div class="checkout-total"><span>Package price</span><strong id="checkout-price">$149</strong></div>
+            <p class="checkout-question">Questions before booking? <a href="/contact">Contact our team</a></p>
+        </aside>
+    </main>
+    {% include '_chat.html' %}
+</body>
+</html>

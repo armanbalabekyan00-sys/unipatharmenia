@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Illustrated New York skyline">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#f4b776"/><stop offset=".56" stop-color="#5b7eaa"/><stop offset="1" stop-color="#122743"/></linearGradient>
+    <linearGradient id="river" x2="0" y2="1"><stop stop-color="#315d83"/><stop offset="1" stop-color="#10263d"/></linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#sky)"/>
+  <circle cx="900" cy="150" r="72" fill="#ffdda8" opacity=".8"/>
+  <path d="M0 450h75v-90h50v45h65V250h78v200h31v-130h49v-95h54v225h32V160h18v-42h9V90h8v28h9v42h16v290h38V285h50v-50h49v215h42V320h40v-80h38v-40h14v-26h7v26h16v26h14v74h43v150h38V270h42v-90h26V90h10V62h9v28h19v180h53v-93h35v-80h25v80h41v273h85v60H0Z" fill="#182d49"/>
+  <path d="M0 490h1200v210H0Z" fill="url(#river)"/>
+  <g fill="#f7cf91" opacity=".75">
+    <path d="M270 282h10v18h-10zm24 0h10v18h-10zm24 0h10v18h-10zm24-27h10v18h-10zm0 30h10v18h-10zm0 30h10v18h-10zM490 190h9v18h-9zm0 29h9v18h-9zm0 29h9v18h-9zm0 29h9v18h-9zm22-87h9v18h-9zm0 29h9v18h-9zm0 29h9v18h-9zm0 29h9v18h-9zM655 258h9v17h-9zm23 0h9v17h-9zm23 0h9v17h-9zm-46 28h9v17h-9zm23 0h9v17h-9zm23 0h9v17h-9zM930 195h10v18h-10zm22 0h10v18h-10zm22 0h10v18h-10zm-44 31h10v18h-10zm22 0h10v18h-10zm22 0h10v18h-10z"/>
+  </g>
+  <g fill="#a9c8df" opacity=".5"><path d="M80 535h160v5H80zm250 22h240v4H330zm330-12h180v5H660zm220 28h190v4H880zM130 604h200v3H130zm460 13h160v4H590zm290-16h210v4H880z"/></g>
+</svg>

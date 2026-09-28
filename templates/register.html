@@ -1,0 +1,9 @@
+{% include '_head.html' %}
+<body>
+<a class="auth-brand brand" href="/"><img src="/images/unipath-symbol.webp" alt="" width="36" height="36"><span>UniPath</span></a>
+<main class="auth-page"><section class="auth-card"><div class="section-kicker">CREATE AN ACCOUNT</div><h1>Save your shortlist.</h1><p>Keep the universities you’re considering and come back to them later.</p>
+    <form id="register-form" class="auth-form"><label>First name<input name="firstName" autocomplete="given-name" required maxlength="55" placeholder="Your first name"></label><label>Last name<input name="lastName" autocomplete="family-name" required maxlength="55" placeholder="Your last name"></label><label>Email address<input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label><label>Password<input type="password" name="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="At least 8 characters"></label><div class="form-response" role="status" aria-live="polite"></div><button class="button" type="submit">Create account <span>→</span></button></form>
+    {% if googleLoginEnabled %}<div class="auth-divider"><span>or continue with</span></div>{% endif %}{% if googleLoginEnabled %}<div class="google-signin-wrap"><div class="google-signin-button" data-google-signin data-client-id="{{ googleClientId }}"></div><p id="google-login-status" class="form-response" role="status" aria-live="polite"></p></div>{% endif %}{% if googleLoginEnabled %}<script src="https://accounts.google.com/gsi/client" async defer></script>{% endif %}
+    <div class="auth-links"><span>Already have an account? <a href="/login">Log in</a></span><a href="/">← Back to homepage</a></div></section></main>
+{% include '_chat.html' %}</body>
+</html>

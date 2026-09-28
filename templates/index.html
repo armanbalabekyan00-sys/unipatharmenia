@@ -1,0 +1,74 @@
+{% include '_head.html' %}
+<body>
+{% include '_nav.html' %}
+<main>
+    <section class="hero page-shell">
+        <div class="hero-copy">
+            <div class="eyebrow">STUDY ABROAD, WITH A PLAN</div>
+            <h1>Compare courses.<br>Choose a country.<br><em>Plan what comes next.</em></h1>
+            <p class="hero-lede">Search universities abroad, check the costs and requirements, and keep your options together while you decide.</p>
+            <div class="hero-actions"><a class="button" href="/universities">Browse universities →</a><a class="text-link" href="/services">See how we help</a></div>
+            <div class="hero-trust hero-stats"><div class="hero-stat"><strong>{{ destinationCount }}</strong><span>destinations</span></div><div class="hero-stat"><strong>{{ universityCount }}</strong><span>university profiles</span></div><div class="hero-stat"><strong>{{ programExampleCount }}</strong><span>program examples</span></div></div>
+        </div>
+    </section>
+    <section class="section page-shell destinations-section">
+        <div class="section-heading"><div><div class="section-kicker">A FEW PLACES TO BEGIN</div><h2>Where would you like to study?</h2></div><a class="text-link" href="/universities">{{ 'See all ' ~ destinationCount ~ ' destinations →' }}</a></div>
+        <div class="university-grid">
+            <a class="uni-card" href="/universities?country=united-kingdom">
+                <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=640&q=72" alt="London skyline and River Thames" loading="lazy" decoding="async" width="640" height="480">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>EUROPE · ISLANDS</span><span>01</span></div>
+                    <h3>United Kingdom</h3>
+                    <p>England · Scotland · Wales</p>
+                    <span class="card-link">Explore →</span>
+                </div>
+            </a>
+            <a class="uni-card" href="/universities?country=united-states">
+                <img src="https://images.unsplash.com/photo-1602196426252-abb226dcd1b4?auto=format&fit=crop&w=640&q=72" alt="Manhattan skyline across the Hudson River" loading="lazy" decoding="async" width="640" height="480" data-fallback="/images/new-york-fallback.svg">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>NORTH AMERICA</span><span>02</span></div>
+                    <h3>United States</h3>
+                    <p>Universities across the USA</p>
+                    <span class="card-link">Explore →</span>
+                </div>
+            </a>
+            <a class="uni-card" href="/universities?country=germany">
+                <img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=640&q=72" alt="Historic streets in Berlin, Germany" loading="lazy" decoding="async" width="640" height="480">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>CENTRAL EUROPE</span><span>03</span></div>
+                    <h3>Germany</h3>
+                    <p>Research and innovation</p>
+                    <span class="card-link">Explore →</span>
+                </div>
+            </a>
+            <a class="uni-card" href="/universities?country=italy">
+                <img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=640&q=72" alt="Historic streets and architecture in Rome, Italy" loading="lazy" decoding="async" width="640" height="480">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>SOUTHERN EUROPE</span><span>04</span></div>
+                    <h3>Italy</h3>
+                    <p>Culture and academic excellence</p>
+                    <span class="card-link">Explore →</span>
+                </div>
+            </a>
+            <a class="uni-card" href="/universities?country=canada">
+                <img src="https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&w=640&q=72" alt="Toronto skyline beside Lake Ontario" loading="lazy" decoding="async" width="640" height="480">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>NORTH AMERICA</span><span>05</span></div>
+                    <h3>Canada</h3>
+                    <p>Research, opportunity and campus life</p>
+                    <span class="card-link">Explore →</span>
+                </div>
+            </a>
+        </div>
+    </section>
+    <section class="program-pathways page-shell"><div class="section-kicker">MORE THAN A COURSE LIST</div><h2>From first search to offer letter.</h2><p>Explore programs by subject, then confirm requirements, scholarships and dates with each university’s admissions team.</p><div class="pathway-grid"><article><span>01 · ADMISSIONS</span><h3>Plan your application</h3><p>Compare degree levels, build a document checklist and check official entry requirements.</p><a href="/services">Application guidance →</a></article><article><span>02 · FUNDING</span><h3>Look for scholarships</h3><p>Filter example programs marked with possible funding, then check the award’s eligibility and deadline.</p><a href="/universities?scholarship=true">Scholarship examples →</a></article><article><span>03 · PREPARATION</span><h3>Get ready for the move</h3><p>Keep tuition, application timing, accommodation and visa research on your planning list.</p><a href="/about">See the planning steps →</a></article></div></section>
+    <section class="section page-shell home-help">
+        <div class="section-kicker">PRACTICAL HELP</div><div class="intro-grid"><h2>Get help with the parts that take time.</h2><p>Compare your options, organize application documents and keep an eye on deadlines. Your first UniPath session is free.<br><a class="text-link" href="/services">See support and prices →</a></p></div>
+        <div class="help-grid"><article><span>01</span><h3>University matching</h3><p>Compare universities and programs by country, subject, study mode and tuition.</p><a href="/universities">Browse programs →</a></article><article><span>02</span><h3>Application planning</h3><p>Keep entry requirements, key documents and application timelines in view.</p><a href="/services">Explore requirements →</a></article><article><span>03</span><h3>Scholarships &amp; funding</h3><p>Look for programs with scholarships and include costs in your decision.</p><a href="/universities">Find funding →</a></article><article><span>04</span><h3>Your study journey</h3><p>Save options you like and return to your international study shortlist later.</p><a href="/register">Create your account →</a></article></div>
+    </section>
+    <section class="journey-band"><div class="page-shell"><div class="section-kicker">ONE STEP AT A TIME</div><h2>Start curious. Get organized. Go further.</h2><div class="journey-grid"><article><span>01</span><h3>Look around</h3><p>Find courses that fit what you want to study and where you want to go.</p></article><article><span>02</span><h3>Ask better questions</h3><p>Check costs, entry requirements and deadlines before you commit.</p></article><article><span>03</span><h3>Make your plan</h3><p>Keep your shortlist together and get help with the steps ahead.</p></article></div></div></section>
+    <section class="experience-band"><strong>7 years</strong><span>helping students build international education plans with confidence.</span><a class="button button-outline" href="/contact">Contact UniPath →</a></section>
+</main>
+{% include '_footer.html' %}{% include '_chat.html' %}
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% include '_head.html' %}
+    <body>
+        {% include '_nav.html' %}
+        <main>
+            <section class="page-intro contact-page-intro page-shell">
+                <div class="section-kicker">CONTACT UNIPATH</div>
+                <h1>What can we<br><em>help you figure out?</em></h1>
+                <p>Choosing a course, comparing countries, or sorting out an application? Send us a note or give us a call.</p>
+            </section>
+            <section class="contact-layout page-shell">
+                <div class="contact-details">
+                    <div class="section-kicker">GET IN TOUCH</div>
+                    <div class="contact-email">Talk with our team.</div>
+                    <p>Use the form or call us directly.</p>
+                    <div class="contact-detail"><span class="contact-detail-icon">⌖</span><div><strong>Visit our office</strong><address>Mamikonyants 52<br>Yerevan, Armenia</address></div></div>
+                    <div class="contact-detail"><span class="contact-detail-icon">☎</span><div><strong>Call us</strong><a href="tel:+37491632717">+374 (91) 63-27-17</a></div></div>
+                    <div class="contact-line"></div>
+                    <div class="section-kicker">SOCIAL</div>
+                    <p>Follow UniPath for updates.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram home page">
+                            <svg viewbox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <circle class="social-dot" cx="18" cy="6" r="1"></circle>
+                            </svg>
+                            <span>Instagram</span>
+                            <span class="social-arrow">↗</span>
+                        </a>
+                        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Facebook home page">
+                            <svg viewbox="0 0 24 24" aria-hidden="true">
+                                <path d="M14 21v-8h3l.5-4H14V7c0-1.2.4-2 2-2h2V1.4C17.1 1.2 16 1 14.5 1 11.4 1 9 2.9 9 6.5V9H6v4h3v8z"></path>
+                            </svg>
+                            <span>Facebook</span>
+                            <span class="social-arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+                <form id="contact-form" class="contact-form form-stack">
+                    <div class="form-heading">
+                        <div class="section-kicker">CONTACT FORM</div>
+                        <h2>Send us<br>a message.</h2>
+                    </div>
+                    <label>
+                        Your name<input name="name" autocomplete="name" required maxlength="120" placeholder="First and last name">
+                    </label>
+                    <label>
+                        Email address<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
+                    </label>
+                    <label>
+                        Topic<select name="subject" required><option value="" disabled selected>Select a topic</option><option>Finding a university</option><option>Applications and planning</option><option>My UniPath account</option><option>Something else</option></select>
+                    </label>
+                    <label>
+                        Message<textarea name="message" required minlength="10" maxlength="3000" rows="5" placeholder="How can we help?"></textarea>
+                    </label>
+                    <div class="form-response" role="status" aria-live="polite">
+                    </div>
+                    <button class="button button-dark" type="submit">Send message <span>→</span></button>
+                    <p class="form-hint">
+                        We’ll use your details to reply to this message.
+                    </p>
+                </form>
+            </section>
+            <section class="contact-map-section page-shell">
+                <div class="contact-office-copy"><div class="section-kicker">OUR OFFICE</div><h2>Visit us in Yerevan.</h2><p>Your first consultation is free. Bring questions about destinations, courses, fees or applications.</p><a class="text-link" href="https://www.google.com/maps/search/?api=1&query=Mamikonyants%2052%2C%20Yerevan%2C%20Armenia" target="_blank" rel="noopener noreferrer">Get directions ↗</a></div>
+                <div class="contact-office-visuals">
+                    <div class="map-frame"><iframe title="Map to the UniPath office at Mamikonyants 52, Yerevan" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3046.9606673664234!2d44.51095857594761!3d40.20993786819965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x406abd4bb26e61b5%3A0x260a1a6c1700da28!2s52%20Mamikoniantc%20pokhoc%2C%20Yerevan%200051!5e0!3m2!1sru!2sam!4v1790265689684!5m2!1sru!2sam" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <figure class="office-photo">
+                    <picture>
+                        <source srcset="/images/office.avif" type="image/avif">
+                        <source srcset="/images/office.webp" type="image/webp">
+                        <img src="/images/office-optimized.jpg" alt="The UniPath office building" loading="lazy" decoding="async" width="800" height="800">
+                    </picture>
+                    <figcaption><span>UNIPATH · YEREVAN</span><strong>Our office on Mamikonyants Street.</strong></figcaption>
+                </figure>
+                </div>
+            </section>
+        </main>
+        {% include '_footer.html' %}{% include '_chat.html' %}
+    </body>
+</html>
