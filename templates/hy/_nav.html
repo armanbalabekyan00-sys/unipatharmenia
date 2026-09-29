@@ -1,0 +1,14 @@
+<header class="site-header">
+    <a class="brand" href="/" aria-label="UniPath-ի գլխավոր էջ"><picture><source srcset="/images/unipath-symbol.avif" type="image/avif"><source srcset="/images/unipath-symbol.webp" type="image/webp"><img src="/images/unipath-symbol.png" alt="" width="36" height="36"></picture><span>UniPath</span></a>
+    <button class="menu-toggle" aria-label="Բացել ընտրացանկը" aria-expanded="false"><span></span><span></span></button>
+    <nav class="main-nav" aria-label="Main navigation">
+        <a href="/" class="{{ 'active' if active == 'home' else '' }}">Գլխավոր</a>
+        <a href="/universities" class="{{ 'active' if active == 'universities' else '' }}">Համալսարաններ</a>
+        <div class="nav-dropdown"><a href="/universities" aria-haspopup="true">Երկրներ⌄</a><div class="nav-dropdown-menu"><a href="/universities?country=united-states">ԱՄՆ</a><a href="/universities?country=united-kingdom">Միացյալ Թագավորություն</a><a href="/universities?country=united-arab-emirates">Արաբական Միացյալ Էմիրություններ</a><a href="/universities?country=australia">Ավստրալիա</a><a href="/universities?country=germany">Գերմանիա</a><a href="/universities">Այլ ուղղություններ →</a></div></div>
+        <a href="/services" class="{{ 'active' if active == 'services' else '' }}">Ծառայություններ</a><a href="/about" class="{{ 'active' if active == 'about' else '' }}">Մեր մասին</a><a href="/account#saved-universities">Ընտրվածներ</a><a href="/contact" class="{{ 'active' if active == 'contact' else '' }}">Կապ</a>
+    </nav>
+    <div class="nav-actions">
+        <label class="language-picker" aria-label="Ընտրել էջի լեզուն" data-no-translate><span aria-hidden="true">◎</span><select id="language-picker" aria-label="Language"><option value="en"{% if not is_hy %} selected{% endif %}>EN</option><option value="hy"{% if is_hy %} selected{% endif %}>ՀԱՅ</option></select></label>
+        {% if not logged_in %}<a class="nav-login" href="/register">Ստեղծել հաշիվ</a><a class="button button-small button-dark" href="/login">Մուտք գործել</a>{% else %}<a class="button button-small button-dark" href="/account">Իմ հաշիվը ↗</a>{% endif %}
+    </div>
+</header>

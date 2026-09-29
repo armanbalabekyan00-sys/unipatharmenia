@@ -1,0 +1,74 @@
+{% include 'hy/_head.html' %}
+<body>
+{% include 'hy/_nav.html' %}
+<main>
+    <section class="hero page-shell">
+        <div class="hero-copy">
+            <div class="eyebrow">ՍՈՎՈՐԵՔ ԱՐՏԵՐԿՐՈՒՄ՝ ՀՍՏԱԿ ԾՐԱԳՐՈՎ</div>
+            <h1>Համեմատեք ծրագրերը։<br>Ընտրեք երկիրը։<br><em>Պլանավորեք հաջորդ քայլերը։</em></h1>
+            <p class="hero-lede">Փնտրեք արտասահմանյան համալսարաններ, ուսումնասիրեք ծախսերն ու պահանջները և համեմատեք տարբերակները։</p>
+            <div class="hero-actions"><a class="button" href="/universities">Դիտել համալսարանները →</a><a class="text-link" href="/services">Տեսնել՝ ինչպես ենք օգնում</a></div>
+            <div class="hero-trust hero-stats"><div class="hero-stat"><strong>{{ destinationCount }}</strong><span>երկիր</span></div><div class="hero-stat"><strong>{{ universityCount }}</strong><span>համալսարանի պրոֆիլ</span></div><div class="hero-stat"><strong>{{ programExampleCount }}</strong><span>ծրագրի օրինակ</span></div></div>
+        </div>
+    </section>
+    <section class="section page-shell destinations-section">
+        <div class="section-heading"><div><div class="section-kicker">ՍԿՍԵԼՈՒ ՄԻ ՔԱՆԻ ՈՒՂՂՈՒԹՅՈՒՆ</div><h2>Որտե՞ղ կցանկանայիք սովորել։</h2></div><a class="text-link" href="/universities">Դիտել բոլոր {{ destinationCount }} ուղղությունները →</a></div>
+        <div class="university-grid">
+            <a class="uni-card" href="/universities?country=united-kingdom">
+                <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=640&q=72" alt="London skyline and River Thames" loading="lazy" decoding="async" width="640" height="480">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>ԵՎՐՈՊԱ · ԿՂԶԻՆԵՐ</span><span>01</span></div>
+                    <h3>Միացյալ Թագավորություն</h3>
+                    <p>Անգլիա · Շոտլանդիա · Ուելս</p>
+                    <span class="card-link">Բացահայտել →</span>
+                </div>
+            </a>
+            <a class="uni-card" href="/universities?country=united-states">
+                <img src="https://images.unsplash.com/photo-1602196426252-abb226dcd1b4?auto=format&fit=crop&w=640&q=72" alt="Manhattan skyline across the Hudson River" loading="lazy" decoding="async" width="640" height="480" data-fallback="/images/new-york-fallback.svg">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>ՀՅՈՒՍԻՍԱՅԻՆ ԱՄԵՐԻԿԱ</span><span>02</span></div>
+                    <h3>ԱՄՆ</h3>
+                    <p>Համալսարաններ ԱՄՆ-ում</p>
+                    <span class="card-link">Բացահայտել →</span>
+                </div>
+            </a>
+            <a class="uni-card" href="/universities?country=germany">
+                <img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=640&q=72" alt="Historic streets in Berlin, Գերմանիա" loading="lazy" decoding="async" width="640" height="480">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>ԿԵՆՏՐՈՆԱԿԱՆ ԵՎՐՈՊԱ</span><span>03</span></div>
+                    <h3>Գերմանիա</h3>
+                    <p>Հետազոտություններ և նորարարություն</p>
+                    <span class="card-link">Բացահայտել →</span>
+                </div>
+            </a>
+            <a class="uni-card" href="/universities?country=italy">
+                <img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&w=640&q=72" alt="Historic streets and architecture in Rome, Իտալիա" loading="lazy" decoding="async" width="640" height="480">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>ՀԱՐԱՎԱՅԻՆ ԵՎՐՈՊԱ</span><span>04</span></div>
+                    <h3>Իտալիա</h3>
+                    <p>Մշակույթ և բարձրակարգ կրթություն</p>
+                    <span class="card-link">Բացահայտել →</span>
+                </div>
+            </a>
+            <a class="uni-card" href="/universities?country=canada">
+                <img src="https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&w=640&q=72" alt="Toronto skyline beside Lake Ontario" loading="lazy" decoding="async" width="640" height="480">
+                <div class="uni-card-body">
+                    <div class="card-meta"><span>ՀՅՈՒՍԻՍԱՅԻՆ ԱՄԵՐԻԿԱ</span><span>05</span></div>
+                    <h3>Կանադա</h3>
+                    <p>Հետազոտություն, հնարավորություններ և ուսանողական կյանք</p>
+                    <span class="card-link">Բացահայտել →</span>
+                </div>
+            </a>
+        </div>
+    </section>
+    <section class="program-pathways page-shell"><div class="section-kicker">ԱՎԵԼԻՆ, ՔԱՆ ԾՐԱԳՐԵՐԻ ՑԱՆԿ</div><h2>Առաջին որոնումից մինչև ընդունելության նամակ։</h2><p>Ընտրեք ծրագրեր ըստ մասնագիտության, ապա ընդունելության պահանջները, կրթաթոշակներն ու ժամկետները ճշտեք համալսարանի ընդունող հանձնաժողովից։</p><div class="pathway-grid"><article><span>01 · ԸՆԴՈՒՆԵԼՈՒԹՅՈՒՆ</span><h3>Պլանավորեք դիմումը</h3><p>Համեմատեք ուսման աստիճանները, կազմեք փաստաթղթերի ցանկ և ստուգեք ընդունելության պաշտոնական պահանջները։</p><a href="/services">Դիմումի աջակցություն →</a></article><article><span>02 · ՖԻՆԱՆՍԱՎՈՐՈՒՄ</span><h3>Փնտրեք կրթաթոշակներ</h3><p>Զտեք հնարավոր ֆինանսավորմամբ ծրագրերը, ապա ճշտեք կրթաթոշակի պայմաններն ու վերջնաժամկետը։</p><a href="/universities?scholarship=true">Կրթաթոշակների օրինակներ →</a></article><article><span>03 · ՆԱԽԱՊԱՏՐԱՍՏՈՒՄ</span><h3>Պատրաստվեք տեղափոխությանը</h3><p>Պլանում ներառեք ուսման վարձը, դիմելու ժամկետները, կացարանն ու վիզայի պայմանները։</p><a href="/about">Տեսնել պլանավորման քայլերը →</a></article></div></section>
+    <section class="section page-shell home-help">
+        <div class="section-kicker">ԳՈՐԾՆԱԿԱՆ ԱՋԱԿՑՈՒԹՅՈՒՆ</div><div class="intro-grid"><h2>Ստացեք աջակցություն ժամանակատար քայլերում։</h2><p>Համեմատեք տարբերակները, կազմակերպեք դիմումի փաստաթղթերը և հետևեք ժամկետներին։ UniPath-ի առաջին հանդիպումն անվճար է։<br><a class="text-link" href="/services">Ծանոթանալ ծառայություններին և գներին →</a></p></div>
+        <div class="help-grid"><article><span>01</span><h3>Համալսարանի ընտրություն</h3><p>Համեմատեք համալսարաններն ու ծրագրերը՝ ըստ երկրի, մասնագիտության, ուսուցման ձևի և վարձի։</p><a href="/universities">Դիտել ծրագրերը →</a></article><article><span>02</span><h3>Դիմումի պլանավորում</h3><p>Հետևեք ընդունելության պահանջներին, անհրաժեշտ փաստաթղթերին և դիմելու ժամկետներին։</p><a href="/services">Դիտել պահանջները →</a></article><article><span>03</span><h3>Կրթաթոշակներ և ֆինանսավորում</h3><p>Գտեք կրթաթոշակով ծրագրեր և հաշվի առեք ծախսերը որոշում կայացնելիս։</p><a href="/universities">Գտնել ֆինանսավորում →</a></article><article><span>04</span><h3>Ձեր ուսման ուղին</h3><p>Պահպանեք ձեզ հետաքրքրող տարբերակները և հետագայում վերադառնաք ձեր ցանկին։</p><a href="/register">Ստեղծել հաշիվ →</a></article></div>
+    </section>
+    <section class="journey-band"><div class="page-shell"><div class="section-kicker">ՔԱՅԼ ԱՌ ՔԱՅԼ</div><h2>Սկսեք ուսումնասիրել, կազմակերպվեք և առաջ գնացեք։</h2><div class="journey-grid"><article><span>01</span><h3>Ուսումնասիրեք</h3><p>Գտեք ձեր մասնագիտությանն ու նախընտրած երկրին համապատասխան ծրագրեր։</p></article><article><span>02</span><h3>Տվեք կարևոր հարցերը</h3><p>Որոշումից առաջ ստուգեք ծախսերը, ընդունելության պահանջներն ու ժամկետները։</p></article><article><span>03</span><h3>Կազմեք ձեր պլանը</h3><p>Պահեք ընտրված տարբերակները մեկ տեղում և օգնություն ստացեք հաջորդ քայլերի համար։</p></article></div></div></section>
+    <section class="experience-band"><strong>7 տարի</strong><span>օգնում ենք ուսանողներին վստահորեն պլանավորել միջազգային կրթությունը։</span><a class="button button-outline" href="/contact">Կապվել UniPath-ի հետ →</a></section>
+</main>
+{% include 'hy/_footer.html' %}{% include 'hy/_chat.html' %}
+</body>
+</html>

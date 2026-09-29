@@ -1,0 +1,134 @@
+{% include 'hy/_head.html' %}
+<body>
+{% include 'hy/_nav.html' %}
+<main class="universities-page">
+    <form id="directory-filter-form" action="/universities" method="get">
+    <section class="search-hero">
+        <div class="page-shell">
+            <div class="section-kicker">ՀԱՄԱԼՍԱՐԱՆՆԵՐ ԵՎ ԾՐԱԳՐԵՐ · {{ destinationCount }} ԵՐԿԻՐ</div>
+            <h1>Ուսումնասիրեք արտասահմանյան համալսարանները։</h1>
+            <p>Որոնեք ըստ ծրագրի, երկրի, աստիճանի և ուսման վարձի։ Պահպանեք համալսարանները՝ հետո համեմատելու համար։</p>
+            <div class="directory-tools">
+                <label class="search-box">
+                    <input type="search" id="uni-search" name="q" placeholder="Համալսարան, ծրագիր կամ մասնագիտություն" aria-label="Որոնել համալսարաններ և ծրագրեր" value="{{ query }}">
+                </label>
+                <label class="filter-box">
+                    <select id="uni-filter" name="country" aria-label="Երկիր">
+                        <option value="all"{% if selectedCountry == 'all' %} selected{% endif %}>Ցանկացած երկիր</option>
+                        {% for destination in destinations %}<option value="{{ destination.slug }}"{% if selectedCountry == destination.slug %} selected{% endif %}>{{ hy_country(destination.name) }}</option>{% endfor %}
+                    </select>
+                </label>
+                <label class="filter-box">
+                    <select id="degree-filter" name="degree" aria-label="Աստիճան">
+                        <option value=""{% if selectedDegree == '' %} selected{% endif %}>Ցանկացած աստիճան</option>
+                        <option value="Bachelor's"{% if bachelorSelected %} selected{% endif %}>Բակալավրիատ</option>
+                        <option value="Master's"{% if masterSelected %} selected{% endif %}>Մագիստրատուրա</option>
+                        <option value="PhD"{% if selectedDegree == 'PhD' %} selected{% endif %}>Դոկտորական</option>
+                    </select>
+                </label>
+                <label class="filter-box">
+                    <select id="field-filter" name="field" aria-label="Ուսումնասիրության ոլորտ">
+                        <option value=""{% if selectedField == '' %} selected{% endif %}>Ցանկացած ոլորտ</option>
+                        <option value="Computer science"{% if selectedField == 'Computer science' %} selected{% endif %}>Համակարգչային գիտություն</option>
+                        <option value="Business"{% if selectedField == 'Business' %} selected{% endif %}>Բիզնես</option>
+                        <option value="Engineering"{% if selectedField == 'Engineering' %} selected{% endif %}>Ճարտարագիտություն</option>
+                        <option value="Arts & humanities"{% if selectedField == 'Arts & humanities' %} selected{% endif %}>Արվեստ և հումանիտար գիտություններ</option>
+                        <option value="Medicine"{% if selectedField == 'Medicine' %} selected{% endif %}>Բժշկություն</option>
+                    </select>
+                </label>
+                <button class="search-submit" id="program-search-button" type="submit">Որոնել →</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="directory page-shell">
+        <div class="program-browser">
+            <aside class="filter-sidebar" aria-label="Ծրագրերի լրացուցիչ զտիչներ">
+                <div class="filter-sidebar-head">
+                    <h2>Զտիչներ</h2>
+                    <button id="reset-filters" type="button">Մաքրել</button>
+                </div>
+                <fieldset>
+                    <legend>Ուսուցման ձև</legend>
+                    <label><input type="radio" name="mode" value="all"{% if selectedMode == 'all' %} checked{% endif %}> Ցանկացած ձև</label>
+                    <label><input type="radio" name="mode" value="Full-time"{% if selectedMode == 'Full-time' %} checked{% endif %}> Առկա</label>
+                    <label><input type="radio" name="mode" value="Part-time"{% if selectedMode == 'Part-time' %} checked{% endif %}> Հեռակա</label>
+                </fieldset>
+                <fieldset>
+                    <legend>Տարեկան ուսման վարձը (ԱՄՆ դոլար)</legend>
+                    <div class="fee-range">
+                        <label class="visually-hidden" for="min-fee">Ուսման նվազագույն տարեկան վարձը՝ ԱՄՆ դոլարով</label>
+                        <input id="min-fee" name="minFee" type="number" min="0" step="1000" placeholder="Նվազագույն" value="{{ minFee if minFee is not none else '' }}">
+                        <label class="visually-hidden" for="max-fee">Ուսման առավելագույն տարեկան վարձը՝ ԱՄՆ դոլարով</label>
+                        <input id="max-fee" name="maxFee" type="number" min="0" step="1000" placeholder="Առավելագույն" value="{{ maxFee if maxFee is not none else '' }}">
+                    </div>
+                    <small>Նշված է մեկ ուսումնական տարվա համար։</small>
+                </fieldset>
+                <fieldset>
+                    <legend>Ֆինանսավորում</legend>
+                    <label><input id="scholarship-only" name="scholarship" value="true" type="checkbox"{% if scholarshipOnly %} checked{% endif %}> Կրթաթոշակներ</label>
+                </fieldset>
+            </aside>
+
+            <div class="program-results">
+                <div class="directory-results-head">
+                    <span class="results-count">{{ programCount }} ծրագիր է գտնվել</span>
+                    <label>Դասավորել ըստ
+                        <select id="uni-sort" name="sort">
+                            <option value="relevance"{% if selectedSort == 'relevance' %} selected{% endif %}>Համապատասխանության</option>
+                            <option value="name"{% if selectedSort == 'name' %} selected{% endif %}>Համալսարանի անուն</option>
+                            <option value="tuition-low"{% if selectedSort == 'tuition-low' %} selected{% endif %}>Նվազագույն վարձ</option>
+                            <option value="tuition-high"{% if selectedSort == 'tuition-high' %} selected{% endif %}>Առավելագույն վարձ</option>
+                        </select>
+                    </label>
+                </div>
+                <p class="popular-program-note">Այս ցանկում ներկայացված են ամենապահանջված մասնագիտություններից մի քանիսը։ Խորհրդատվության ընթացքում միասին կքննարկենք նաև այլ ծրագրեր։</p>
+                <p class="tuition-disclaimer">Ծրագրերի անուններն ու վճարները համեմատության օրինակներ են։ Թարմ տեղեկությունը ստուգեք համալսարանի պաշտոնական կայքում։</p>
+                <div class="form-response favorite-response" id="favorite-status" role="status" aria-live="polite"></div>
+
+                <div class="directory-list" id="directory-list">
+                    {% for program in programs %}<article class="program-card" id="{{ program.slug }}">
+                        <div class="program-logo">
+                            <img alt="" aria-hidden="true" loading="lazy" decoding="async" width="36" height="36" data-logo-fallback src="https://www.google.com/s2/favicons?domain={{ program.domain }}&amp;sz=128">
+                            <span hidden>{{ (program.university)[:1] }}</span>
+                        </div>
+                        <div class="program-main">
+                            <div class="program-university">{{ program.university }}</div>
+                            <h2><a class="program-title-link" href="/programs/{{ program.slug }}">{{ hy_degree(program.degree) }} {{ program.title }}</a></h2>
+                            <p class="program-location">{{ program.city }}, {{ hy_country(program.country) }}</p>
+                            <div class="program-facts">
+                                <span>{{ hy_duration(program.duration) }}</span>
+                                <span>{{ hy_mode(program.mode) }}</span>
+                                <span>~${{ format_number(program.annualTuitionUsd) }} / տարի</span>
+                            </div>
+                            <div class="tag-row">
+                                <span>{{ hy_field(program.field) }}</span>
+                                {% for tag in program.tags.split(' · ') %}<span>{{ hy_tag(tag) }}</span>{% endfor %}
+                            </div>
+                            <p class="program-description">Ծրագրի բովանդակության և ընդունելության պայմանների թարմ տվյալները ճշտեք համալսարանի պաշտոնական կայքում։</p>
+                            <div class="program-card-bottom">
+                                {% if program.scholarship %}<span class="scholarship-label">Հնարավոր են կրթաթոշակներ</span>{% endif %}
+                                {% if not (program.scholarship) %}<span class="funding-unavailable">Ճշտեք ֆինանսավորման հնարավորությունները</span>{% endif %}
+                                <div class="directory-actions">
+                                    <button class="favorite-button" type="button" aria-pressed="false" data-favorite="{{ program.universitySlug }}" data-university="{{ program.university }}">♡ Պահպանել համալսարանը</button>
+                                    <a class="text-link" href="/programs/{{ program.slug }}">Ծրագրի մանրամասները →</a>
+                                    <a class="official-link" target="_blank" rel="noopener noreferrer" href="{{ program.officialUrl }}">Համալսարանի կայք ↗</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>{% endfor %}
+                </div>
+                {% if programCount == 0 %}<div class="empty-state">Այս զտիչներով ծրագրեր չկան։ Փոխեք որոնման չափանիշները։</div>{% endif %}
+                {% if pageCount > 1 %}<nav class="program-pagination" aria-label="Program result pages">
+                    {% if previousPageUrl is not none %}<a class="pagination-link" href="{{ previousPageUrl }}">← Նախորդը</a>{% endif %}
+                    <span>Page {{ currentPage }} of {{ pageCount }}</span>
+                    {% if nextPageUrl is not none %}<a class="pagination-link" href="{{ nextPageUrl }}">Հաջորդը →</a>{% endif %}
+                </nav>{% endif %}
+            </div>
+        </div>
+    </section>
+    </form>
+</main>
+{% include 'hy/_footer.html' %}{% include 'hy/_chat.html' %}
+</body>
+</html>

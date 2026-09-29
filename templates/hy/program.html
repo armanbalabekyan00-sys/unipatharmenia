@@ -1,0 +1,41 @@
+{% include 'hy/_head.html' %}
+<body>
+{% include 'hy/_nav.html' %}
+<main class="program-detail-page">
+    <section class="program-detail-hero page-shell">
+        <a class="text-link" href="/universities?country={{ program.countrySlug }}">← Վերադառնալ ծրագրերին՝ <span>{{ hy_country(program.country) }}</span></a>
+        <div class="section-kicker">{{ hy_country(program.country) }} · {{ hy_field(program.field) }}</div>
+        <h1>{{ hy_degree(program.degree) }} {{ program.title }}</h1>
+        <p class="program-detail-university">{{ program.university }} · {{ program.city }}</p>
+        <p class="program-detail-description">Ծրագրի բովանդակության, ընդունելության պայմանների և ուսման վարձի թարմ տվյալները ճշտեք համալսարանի պաշտոնական կայքում։</p>
+        <div class="program-detail-actions">
+            <button class="favorite-button" type="button" aria-pressed="false" data-favorite="{{ program.universitySlug }}" data-university="{{ program.university }}">♡ Պահպանել համալսարանը</button>
+            <a class="button" target="_blank" rel="noopener noreferrer" href="{{ program.officialUrl }}">Այցելել համալսարանի պաշտոնական կայք ↗</a>
+        </div>
+    </section>
+    <section class="program-detail-content page-shell">
+        <article class="program-overview-card">
+            <div class="section-kicker">ԾՐԱԳՐԻ ԱՄՓՈՓՈՒՄ</div>
+            <h2>Ինչ իմանալ համեմատելիս</h2>
+            <dl class="program-overview-facts">
+                <div><dt>Աստիճան</dt><dd>{{ hy_degree(program.degree) }}</dd></div>
+                <div><dt>Սովորական տևողություն</dt><dd>{{ hy_duration(program.duration) }}</dd></div>
+                <div><dt>Ուսուցման ձև</dt><dd>{{ hy_mode(program.mode) }}</dd></div>
+                <div><dt>Ուսման մոտավոր վարձ</dt><dd>~${{ format_number(program.annualTuitionUsd) }} ԱՄՆ դոլար՝ տարեկան</dd></div>
+                <div><dt>Ֆինանսավորում</dt><dd>{{ 'Հնարավոր է կրթաթոշակ լինի․ պայմանները ճշտեք համալսարանից։' if program.scholarship else 'Ֆինանսավորման հնարավորությունները ճշտեք համալսարանից։' }}</dd></div>
+                <div><dt>Ուսման երկիր</dt><dd>{{ program.city }}, {{ hy_country(program.country) }}</dd></div>
+            </dl>
+            <p class="tuition-disclaimer">Սա համեմատության օրինակ է, ոչ պաշտոնական ծրագրի նկարագրություն կամ ուսման վարձի առաջարկ։ Դիմելուց առաջ ճշտեք տվյալները համալսարանից։</p>
+        </article>
+        <aside class="program-next-steps">
+            <span class="section-kicker">ՇԱՐՈՒՆԱԿԵՔ ՀԱՄԵՄԱՏԵԼ</span>
+            <h2>Ուսումնասիրեք այլ տարբերակներ։</h2>
+            <p>Համեմատեք նույն երկրի ծրագրերը, պահպանեք ձեզ հետաքրքրող համալսարանները և դիմելու մանրամասները ճշտեք ընդունող հանձնաժողովից։</p>
+            <a class="text-link" href="/universities?country={{ program.countrySlug }}">Տեսնել ավելի շատ ծրագրեր՝ <span>{{ hy_country(program.country) }}</span> →</a>
+            <a class="text-link" href="/services">Ամրագրել անվճար առաջին խորհրդատվությունը →</a>
+        </aside>
+    </section>
+</main>
+{% include 'hy/_footer.html' %}{% include 'hy/_chat.html' %}
+</body>
+</html>

@@ -1,0 +1,9 @@
+{% include 'hy/_head.html' %}
+<body>
+<a class="auth-brand brand" href="/"><img src="/images/unipath-symbol.webp" alt="" width="36" height="36"><span>UniPath</span></a>
+<main class="auth-page"><section class="auth-card"><div class="section-kicker">ՈՒՐԱԽ ԵՆՔ ՁԵԶ ԿՐԿԻՆ ՏԵՍՆԵԼ</div><h1>Շարունակեք այնտեղից, որտեղ կանգ էիք առել։</h1><p>Մուտք գործեք՝ պահպանած համալսարանները դիտելու և ձեր պլանները մեկ տեղում պահելու համար։</p>{% if request.args.get('reset') is not none %}<p class="form-response success">Գաղտնաբառը վերականգնված է։ Մուտք գործեք նոր գաղտնաբառով։</p>{% endif %}
+    <form id="login-form" class="auth-form"><label>Էլ․ փոստի հասցե<input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label><label>Գաղտնաբառ<input type="password" name="password" autocomplete="current-password" required minlength="8" maxlength="72" placeholder="Մուտքագրեք գաղտնաբառը"></label><div class="form-response" role="status" aria-live="polite"></div><button class="button" type="submit">Մուտք գործել <span>→</span></button><a class="forgot-password-link" href="/forgot-password">Մոռացե՞լ եք գաղտնաբառը։</a></form>
+    {% if googleLoginEnabled %}<div class="auth-divider"><span>կամ շարունակել՝</span></div>{% endif %}{% if googleLoginEnabled %}<div class="google-signin-wrap"><div class="google-signin-button" data-google-signin data-client-id="{{ googleClientId }}"></div><p id="google-login-status" class="form-response" role="status" aria-live="polite"></p></div>{% endif %}{% if googleLoginEnabled %}<script src="https://accounts.google.com/gsi/client" async defer></script>{% endif %}
+    <div class="auth-links"><span>Առաջի՞ն անգամ եք UniPath-ում։ <a href="/register">Ստեղծել հաշիվ</a></span><a href="/">← Վերադառնալ գլխավոր էջ</a></div></section></main>
+{% include 'hy/_chat.html' %}</body>
+</html>

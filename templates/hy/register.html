@@ -1,0 +1,9 @@
+{% include 'hy/_head.html' %}
+<body>
+<a class="auth-brand brand" href="/"><img src="/images/unipath-symbol.webp" alt="" width="36" height="36"><span>UniPath</span></a>
+<main class="auth-page"><section class="auth-card"><div class="section-kicker">ՍՏԵՂԾԵԼ ՀԱՇԻՎ</div><h1>Պահպանեք ձեր ցանկը։</h1><p>Պահպանեք ձեզ հետաքրքրող համալսարանները և վերադարձրեք դրանց ավելի ուշ։</p>
+    <form id="register-form" class="auth-form"><label>Անուն<input name="firstName" autocomplete="given-name" required maxlength="55" placeholder="Ձեր անունը"></label><label>Ազգանուն<input name="lastName" autocomplete="family-name" required maxlength="55" placeholder="Ձեր ազգանունը"></label><label>Էլ․ փոստի հասցե<input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label><label>Գաղտնաբառ<input type="password" name="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="Առնվազն 8 նիշ"></label><div class="form-response" role="status" aria-live="polite"></div><button class="button" type="submit">Ստեղծել հաշիվ <span>→</span></button></form>
+    {% if googleLoginEnabled %}<div class="auth-divider"><span>կամ շարունակել՝</span></div>{% endif %}{% if googleLoginEnabled %}<div class="google-signin-wrap"><div class="google-signin-button" data-google-signin data-client-id="{{ googleClientId }}"></div><p id="google-login-status" class="form-response" role="status" aria-live="polite"></p></div>{% endif %}{% if googleLoginEnabled %}<script src="https://accounts.google.com/gsi/client" async defer></script>{% endif %}
+    <div class="auth-links"><span>Արդեն ունե՞ք հաշիվ։ <a href="/login">Մուտք գործել</a></span><a href="/">← Վերադառնալ գլխավոր էջ</a></div></section></main>
+{% include 'hy/_chat.html' %}</body>
+</html>

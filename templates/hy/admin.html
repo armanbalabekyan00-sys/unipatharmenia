@@ -1,0 +1,27 @@
+{% include 'hy/_head.html' %}
+<body class="admin-page">
+<a class="admin-back" href="/">← UniPath-ի գլխավոր էջ</a>
+<main class="admin-shell">
+    <section class="admin-login-card" id="admin-login-card">
+        <div class="section-kicker">ԹԻՄԻ ՓԱԿ ԲԱԺԻՆ</div>
+        <h1>UniPath admin</h1>
+        <p class="muted">Մուտքագրեք սերվերում սահմանված ադմինիստրատորի գաղտնաբառը՝ դիմումներն ու ամրագրումները դիտելու համար։</p>
+        <form id="admin-login-form" class="auth-form">
+            <label>Ադմինիստրատորի գաղտնաբառը<input name="password" type="password" autocomplete="current-password" required></label>
+            <p class="form-response" id="admin-login-status" role="status" aria-live="polite"></p>
+            <button class="button" type="submit">Մուտք գործել ադմինիստրացիա →</button>
+        </form>
+    </section>
+    <section id="admin-dashboard" hidden>
+        <div class="admin-dashboard-head"><div><div class="section-kicker">ԹԻՄԻ ԱՇԽԱՏԱՏԱՐԱԾՔ</div><h1>Մուտքայիններ և ակտիվություն</h1></div><button class="button button-outline" id="admin-logout" type="button">Դուրս գալ</button></div>
+        <div class="admin-stats" id="admin-stats"></div>
+        <h2>Վերջին հաղորդագրություններն ու խորհրդատվության հարցումները</h2>
+        <p class="muted">Այստեղ կարող եք դիտել ուսանողների հաշիվներն ու պատասխանել կայքի զրույցներին։ Էլ․ փոստով պատասխանելու համար անհրաժեշտ է կարգավորել SMTP-ը։</p>
+        <h2>Ուսանողների հաշիվները</h2><div class="admin-users-wrap"><table class="admin-users"><thead><tr><th>Ուսանող</th><th>Ուսումնական նպատակներ</th><th>Ընտրվածներ</th><th>Գրանցվել է</th></tr></thead><tbody id="admin-users"><tr><td colspan="4">Հաշիվները բեռնվում են…</td></tr></tbody></table></div>
+        <h2>Կայքի զրույցները</h2><div class="admin-chats" id="admin-chats"><p class="muted">Զրույցները բեռնվում են…</p></div>
+        <h2>Կապի հաղորդագրություններն ու խորհրդատվության հարցումները</h2>
+        <div class="admin-inquiries" id="admin-inquiries"><p class="muted">Հաղորդագրությունները բեռնվում են…</p></div>
+    </section>
+</main>
+{% include 'hy/_chat.html' %}</body>
+</html>

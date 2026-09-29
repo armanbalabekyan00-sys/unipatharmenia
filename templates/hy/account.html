@@ -1,0 +1,76 @@
+{% include 'hy/_head.html' %}
+    <body>
+        {% include 'hy/_nav.html' %}
+        <main class="account-page page-shell">
+            <div class="section-kicker">
+                ՁԵՐ ՀԱՇԻՎԸ
+            </div>
+            <h1>
+                Ձեր ուսումնական<br><em>պլանները։</em>
+            </h1>
+            <p class="account-intro">
+                Բարի գալուստ, <strong data-account-name>ընկեր</strong>. Ձեր ուսումնական պլանն ու պահպանած համալսարանները՝ ստորև։
+            </p>
+            <section class="account-welcome account-panel" aria-label="Study plan overview">
+                <div><div class="section-kicker">ՁԵՐ ՀԱՋՈՐԴ ՔԱՅԼԸ</div><h2 data-account-next-step>Սկսեք ձեր ուսումնական նպատակներից</h2><p data-account-plan-summary>Ընտրեք մասնագիտությունը, երկիրն ու ընդունելության տարին՝ դիմելու հստակ պլան կազմելու համար։</p></div>
+                <a class="button button-small" href="/universities">Գտնել ծրագրեր →</a>
+                <div class="account-quick-stats"><article><strong data-account-favorites-count>0</strong><span>Պահպանած համալսարանները</span></article><article><strong data-account-requests-count>0</strong><span>Խորհրդատվության հարցումներ</span></article><article><strong>Անվճար</strong><span>Առաջին հանդիպում</span></article></div>
+            </section>
+            <section class="account-panel account-profile" aria-labelledby="profile-heading">
+                <div class="section-kicker">ՁԵՐ ՊՐՈՖԻԼԸ</div>
+                <h2 id="profile-heading">Ձեր տվյալներն ու ուսումնական նպատակները</h2>
+                <p class="muted">Լրացրեք մի քանի տվյալ՝ ձեր ցանկն ու հաջորդ քայլերը ձեզ հարմարեցնելու համար։</p>
+                <form id="profile-form" class="auth-form">
+                    <div class="checkout-row">
+                        <label>Անուն<input name="firstName" autocomplete="given-name" required maxlength="55"></label>
+                        <label>Ազգանուն<input name="lastName" autocomplete="family-name" required maxlength="55"></label>
+                    </div>
+                    <label>Էլ․ փոստի հասցե<input type="email" data-account-email autocomplete="email" readonly></label>
+                    <div class="checkout-row"><label>Նախընտրած երկիրը<select name="targetCountry"><option value="">Դեռ ուսումնասիրում եմ</option><option>ԱՄՆ</option><option>Միացյալ Թագավորություն</option><option>Կանադա</option><option>Գերմանիա</option><option>Իտալիա</option><option>Ավստրալիա</option><option>Ֆրանսիա</option><option>Չինաստան</option><option>Հարավային Կորեա</option><option>Իռլանդիա</option><option>Շոտլանդիա</option></select></label><label>Ուսման աստիճանը<select name="intendedDegree"><option value="">Դեռ չեմ որոշել</option><option>Բակալավրիատ</option><option>Մագիստրատուրա</option><option>Դոկտորական</option><option>Նախապատրաստական ծրագիր</option></select></label></div>
+                    <div class="checkout-row"><label>Ուսումնասիրության ոլորտ<input name="subjectArea" maxlength="80" placeholder="e.g. Computer science"></label><label>Ուսման մեկնարկի տարին<input name="targetIntake" maxlength="40" placeholder="e.g. Աշուն 2027"></label></div>
+                    <label>Տարեկան ուսման բյուջե (ԱՄՆ դոլար)<input name="annualBudget" maxlength="40" placeholder="e.g. $15,000–$25,000"></label>
+                    <p class="form-response" role="status" aria-live="polite"></p>
+                    <button class="button button-small" type="submit">Պահպանել պրոֆիլը</button>
+                </form>
+            </section>
+            <div class="account-grid">
+                <section class="account-panel">
+                    <div class="panel-top">
+                        <div>
+                            <div class="section-kicker">
+                                ՁԵՐ ՊԼԱՆԸ
+                            </div>
+                            <h2>
+                                Քայլ առ քայլ
+                            </h2>
+                        </div>
+                        <span class="account-icon">↗</span>
+                    </div>
+                    <div id="account-plan-list" class="account-plan-list">
+                        <p class="muted">
+                            Պլանը բեռնվում է…
+                        </p>
+                    </div>
+                    <a class="text-link" href="/pricing">Դիտել փաթեթները <span>→</span></a>
+                </section>
+                <section class="account-panel" id="saved-universities">
+                    <div class="section-kicker">
+                        ՁԵՐ ԸՆՏՐԱՆՔԸ · ՀԱՄԱԼՍԱՐԱՆՆԵՐԻ ՑԱՆԿ
+                    </div>
+                    <h2>
+                        Տարբերակներ, որոնց կարող եք վերադառնալ։
+                    </h2>
+                    <div id="account-favorite-list" class="account-favorite-list">
+                        <p class="muted">
+                            Պահպանած համալսարանները բեռնվում են…
+                        </p>
+                    </div>
+                    <a class="text-link" href="/universities">Դիտել համալսարանները <span>→</span></a>
+                </section>
+            </div>
+            <section class="account-checklist account-panel"><div class="section-kicker">ԴԻՄՈՒՄԻ ՔԱՅԼԵՐԸ</div><h2>Շարունակեք հաջորդ քայլերը։</h2><div class="account-checklist-grid"><article><span>01</span><strong>Կազմեք համալսարանների ցանկ</strong><p>Պահպանեք ձեր նպատակներին համապատասխան ծրագրերը։</p><a href="/universities">Դիտել ծրագրերը →</a></article><article><span>02</span><strong>Ստուգեք պահանջները</strong><p>Ուսումնասիրեք ընդունելության պաշտոնական կանոնները, ծախսերն ու ժամկետները։</p><a href="/universities">Համեմատել ուղղությունները →</a></article><article><span>03</span><strong>Պլանավորեք ֆինանսավորումը</strong><p>Յուրաքանչյուր համալսարանից ճշտեք կրթաթոշակներն ու դիմելու պայմանները։</p><a href="/universities?scholarship=true">Գտնել ֆինանսավորում →</a></article><article><span>04</span><strong>Խորհրդատվություն խնդրեք</strong><p>UniPath-ի առաջին հանդիպումն անվճար է։</p><a href="/contact">Ամրագրել անվճար հանդիպում →</a></article></div></section>
+            <button class="text-button" id="logout-button">Դուրս գալ <span>↗</span></button>
+        </main>
+        {% include 'hy/_footer.html' %}{% include 'hy/_chat.html' %}
+    </body>
+</html>
