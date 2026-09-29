@@ -182,6 +182,13 @@ def send_email(to: str, subject: str, body: str, reply_to: str | None = None) ->
 def shared_template_data():
     path = request.path
     base = PUBLIC_URL or request.url_root.rstrip("/")
+    is_en = path == "/en" or path.startswith("/en/")
+    is_hy = not is_en and not path.startswith(("/api/", "/static/", "/images/", "/css/", "/js/", "/robots.txt", "/sitemap.xml"))
+    english_path = path[3:] if is_en else path
+    if not english_path:
+        english_path = "/"
+    hy_path = english_path
+    english_page_url = base + ("/en/" if english_path == "/" else "/en" + english_path)
     return {
         "destinations": DESTINATIONS,
         "destinationCount": len(DESTINATIONS),
@@ -190,18 +197,64 @@ def shared_template_data():
         "logged_in": current_user_id() is not None,
         "googleLoginEnabled": bool(GOOGLE_CLIENT_ID),
         "googleClientId": GOOGLE_CLIENT_ID,
-        "private_page": path in {"/login", "/register", "/account", "/admin", "/checkout", "/forgot-password", "/reset-password"},
+        "is_hy": is_hy,
+        "page_language": "hy" if is_hy else "en",
+        "english_url": english_page_url,
+        "armenian_url": base + hy_path,
+        "private_page": english_path in {"/login", "/register", "/account", "/admin", "/checkout", "/forgot-password", "/reset-password"},
         "canonical_url": base + path,
         "format_number": lambda value: f"{int(value):,}",
+        "hy_country": lambda value: {"United States": "ԱՄՆ", "United Kingdom": "Միացյալ Թագավորություն", "United Arab Emirates": "Արաբական Միացյալ Էմիրություններ", "South Korea": "Հարավային Կորեա", "Germany": "Գերմանիա", "Italy": "Իտալիա", "France": "Ֆրանսիա", "Spain": "Իսպանիա", "Canada": "Կանադա", "Australia": "Ավստրալիա", "Ireland": "Իռլանդիա", "China": "Չինաստան", "Scotland": "Շոտլանդիա", "Netherlands": "Նիդերլանդներ", "Singapore": "Սինգապուր", "Austria": "Ավստրիա", "Belgium": "Բելգիա", "Czech Republic": "Չեխիա", "Poland": "Լեհաստան", "Portugal": "Պորտուգալիա", "Sweden": "Շվեդիա", "Switzerland": "Շվեյցարիա"}.get(value, value),
+        "hy_degree": lambda value: {"Bachelor's": "Բակալավրիատ", "Master's": "Մագիստրատուրա", "PhD": "Ասպիրանտուրա", "Doctorate": "Դոկտորական"}.get(value, value),
+        "hy_field": lambda value: {"Computer science": "Համակարգչային գիտություն", "Business": "Բիզնես", "Engineering": "Ճարտարագիտություն", "Arts & humanities": "Արվեստ և հումանիտար գիտություններ", "Medicine": "Բժշկություն"}.get(value, value),
+        "hy_mode": lambda value: {"Full-time": "Առկա", "Part-time": "Հեռակա", "Online": "Առցանց"}.get(value, value),
+        "hy_duration": lambda value: str(value).replace(" years", " տարի").replace(" year", " տարի"),
+        "hy_tag": lambda value: {"algorithms": "ալգորիթմներ", "analytics": "վերլուծություն", "behavior": "վարքագիծ", "climate": "կլիմա", "cognition": "ճանաչողություն", "communication": "հաղորդակցություն", "design": "նախագծում", "diplomacy": "դիվանագիտություն", "ecology": "էկոլոգիա", "energy": "էներգետիկա", "epidemiology": "համաճարակաբանություն", "finance": "ֆինանսներ", "global affairs": "գլոբալ հարցեր", "health systems": "առողջապահական համակարգեր", "international": "միջազգային", "leadership": "առաջնորդություն", "legal systems": "իրավական համակարգեր", "machine learning": "մեքենայական ուսուցում", "markets": "շուկաներ", "materials": "նյութեր", "policy": "քաղաքականություն", "research": "հետազոտություն", "software": "ծրագրային ապահովում", "statistics": "վիճակագրություն", "strategy": "ռազմավարություն", "studio": "ստուդիա", "sustainability": "կայուն զարգացում", "systems": "համակարգեր", "urbanism": "քաղաքաշինություն"}.get(value, value),
     }
 
 
 def page(template: str, *, title: str, description: str, active: str = "", **context):
+    if not (request.path == "/en" or request.path.startswith("/en/")) and not request.path.startswith(("/api/", "/static/", "/images/", "/css/", "/js/", "/robots.txt", "/sitemap.xml")):
+        hy_titles = {
+            "index.html": "Սովորել արտերկրում․ համալսարաններ և ընդունելություն",
+            "universities.html": "Համալսարաններ և ծրագրեր արտերկրում",
+            "program.html": "Ուսումնական ծրագիր արտերկրում",
+            "about.html": "UniPath-ի մասին",
+            "services.html": "Աջակցություն արտերկրում ուսման դիմելու համար",
+            "contact.html": "Կապվել UniPath-ի հետ",
+            "login.html": "Մուտք գործել UniPath",
+            "register.html": "Ստեղծել UniPath հաշիվ",
+            "account.html": "Ձեր UniPath հաշիվը",
+            "admin.html": "UniPath-ի ադմինիստրացիա",
+            "checkout.html": "Ամրագրել խորհրդատվություն UniPath-ի հետ",
+            "forgot-password.html": "Վերականգնել UniPath-ի գաղտնաբառը",
+            "reset-password.html": "Սահմանել նոր գաղտնաբառ",
+        }
+        hy_descriptions = {
+            "index.html": "Համեմատեք արտասահմանյան համալսարաններն ու ուսումնական ծրագրերը, ուսումնասիրեք ուսման վարձը և ընդունելության պահանջները։ Առաջին հանդիպումն անվճար է։",
+            "universities.html": "Փնտրեք արտասահմանյան համալսարաններ ու ծրագրեր՝ ըստ երկրի, մասնագիտության, աստիճանի, ուսման վարձի և կրթաթոշակների։",
+            "about.html": "Իմացեք UniPath-ի և արտասահմանում սովորելու պլանավորման աջակցության մասին։",
+            "services.html": "Ծանոթացեք համալսարան ընտրելու, դիմումը պլանավորելու և կրթաթոշակներ ուսումնասիրելու UniPath ծառայություններին։ Առաջին հանդիպումն անվճար է։",
+            "contact.html": "Կապվեք UniPath-ի հետ արտասահմանյան համալսարանների և ընդունելության գործընթացի վերաբերյալ հարցերով։",
+        }
+        title = hy_titles.get(template, title)
+        description = hy_descriptions.get(template, description)
+        template = "hy/" + template
     return render_template(template, page_title=title, page_description=description, active=active, **context)
 
 
 @app.after_request
 def security_headers(response):
+    if request.path.startswith("/en/") and response.mimetype == "text/html":
+        response.direct_passthrough = False
+        body = response.get_data(as_text=True)
+        body = re.sub(
+            r'((?:href|action)=[\'\"])(/(?:home|universities|programs(?:/[^\'\"?#]*)?|about|services|how-it-works|pricing|checkout|contact|login|register|forgot-password|reset-password|account|admin)(?:[?#][^\'\"]*)?)([\'\"])',
+            lambda match: match.group(1) + "/en" + match.group(2) + match.group(3),
+            body,
+        )
+        body = body.replace('href="/"', 'href="/en/"').replace("href='/'", "href='/en/'")
+        response.set_data(body)
     response.headers.setdefault("X-Content-Type-Options", "nosniff")
     response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
     response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
@@ -280,10 +333,14 @@ def universities_page():
             updated.pop("page", None)
         else:
             updated["page"] = str(number)
-        return "/universities?" + urllib.parse.urlencode(updated) if updated else "/universities"
+        route = "/en/universities" if request.path.startswith("/en/") else "/universities"
+        return route + "?" + urllib.parse.urlencode(updated) if updated else route
     country_name = next((item["name"] for item in DESTINATIONS if item["slug"] == country), None)
-    title = "Study abroad programs and universities" if not country_name else f"Study abroad programs in {country_name}"
-    description = ("Search study abroad programs by university, country, degree, field, tuition and funding. Compare examples across 22 destinations." if not country_name else f"Compare study abroad programs, universities, degree options and tuition estimates in {country_name}. Check current entry requirements with each university.")
+    hy_country_names = {"United States": "ԱՄՆ", "United Kingdom": "Միացյալ Թագավորություն", "United Arab Emirates": "Արաբական Միացյալ Էմիրություններ", "South Korea": "Հարավային Կորեա", "Germany": "Գերմանիա", "Italy": "Իտալիա", "France": "Ֆրանսիա", "Spain": "Իսպանիա", "Canada": "Կանադա", "Australia": "Ավստրալիա", "Ireland": "Իռլանդիա", "China": "Չինաստան", "Scotland": "Շոտլանդիա"}
+    is_hy = not request.path.startswith("/en/")
+    title_country = hy_country_names.get(country_name, country_name) if is_hy else country_name
+    title = ("Արտասահմանյան ծրագրեր և համալսարաններ" if is_hy else "Study abroad programs and universities") if not country_name else (f"Ծրագրեր և համալսարաններ՝ {title_country}-ում" if is_hy else f"Study abroad programs in {country_name}")
+    description = (("Որոնեք արտասահմանյան ծրագրեր՝ ըստ համալսարանի, երկրի, աստիճանի, ոլորտի, ուսման վարձի և կրթաթոշակների։" if is_hy else "Search study abroad programs by university, country, degree, field, tuition and funding. Compare examples across 22 destinations.") if not country_name else (f"Համեմատեք {title_country}-ի ծրագրերը, համալսարանները, աստիճաններն ու ուսման վարձի մոտավոր չափերը։ Ընդունելության պահանջները ճշտեք համալսարանից։" if is_hy else f"Compare study abroad programs, universities, degree options and tuition estimates in {country_name}. Check current entry requirements with each university."))
     context = dict(
         programs=current_programs, programCount=len(results), pageCount=page_count, currentPage=page_number,
         previousPageUrl=page_link(page_number - 1) if page_number > 1 else None,
@@ -354,7 +411,7 @@ def reset_password_page():
 @app.get("/account")
 def account_page():
     if current_user_id() is None:
-        return redirect(url_for("login_page", next="account"))
+        return redirect(("/en/login" if request.path.startswith("/en/") else "/login") + "?next=account")
     return page("account.html", title="Your UniPath account", description="Manage your UniPath account, university shortlist and study plan.", private_page=True)
 
 
@@ -364,10 +421,22 @@ def robots():
     return f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", 200, {"Content-Type": "text/plain; charset=utf-8"}
 
 
+@app.get("/google299c26865c7a81e0.html")
+def google_site_verification():
+    return "google-site-verification: google299c26865c7a81e0.html", 200, {"Content-Type": "text/html; charset=utf-8"}
+
+
+@app.get("/BingSiteAuth.xml")
+def bing_site_verification():
+    return "<users>\n<user>34B0E910628220E745E37DF5A84EF327</user>\n</users>", 200, {"Content-Type": "application/xml; charset=utf-8"}
+
+
 @app.get("/sitemap.xml")
 def sitemap():
     base = PUBLIC_URL or request.url_root.rstrip("/")
-    urls = ["/", "/universities", "/services", "/about", "/contact"] + ["/programs/" + item["slug"] for item in PROGRAMS]
+    armenian_urls = ["/", "/universities", "/services", "/about", "/contact"] + ["/programs/" + item["slug"] for item in PROGRAMS]
+    english_urls = [("/en/" if path == "/" else "/en" + path) for path in armenian_urls]
+    urls = armenian_urls + english_urls
     xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
     xml += "".join(f"<url><loc>{base}{path}</loc></url>" for path in urls) + "</urlset>"
     return xml, 200, {"Content-Type": "application/xml; charset=utf-8"}
@@ -735,6 +804,23 @@ def not_found(_error):
     if request.path.startswith("/api/"):
         return api_error("Not found.", 404)
     return "Page not found", 404
+
+
+# Each Armenian page has its own stable URL and its own editable HTML template.
+# The handlers reuse the same catalog and account logic as the English site.
+for _english_path, _view_name in (
+    ("/", "home"), ("/universities", "universities_page"),
+    ("/programs/<slug>", "program_page"), ("/about", "about_page"),
+    ("/admin", "admin_page"), ("/services", "services_page"),
+    ("/checkout", "checkout_page"), ("/contact", "contact_page"),
+    ("/login", "login_page"), ("/register", "register_page"),
+    ("/forgot-password", "forgot_password_page"),
+    ("/reset-password", "reset_password_page"), ("/account", "account_page"),
+):
+    _en_path = "/en/" if _english_path == "/" else "/en" + _english_path
+    app.add_url_rule(_en_path, endpoint="en_" + _view_name, view_func=app.view_functions[_view_name], methods=["GET"])
+app.add_url_rule("/en/how-it-works", endpoint="en_how_it_works", view_func=app.view_functions["services_page"], methods=["GET"])
+app.add_url_rule("/en/pricing", endpoint="en_pricing", view_func=app.view_functions["services_page"], methods=["GET"])
 
 
 if __name__ == "__main__":

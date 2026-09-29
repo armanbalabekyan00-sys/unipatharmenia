@@ -1,6 +1,11 @@
 (() => {
     const $ = (selector, root = document) => root.querySelector(selector);
     const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+    const localizedPath = path => {
+        const isEnglish = /^\/en(?:\/|$)/.test(window.location.pathname);
+        if (path === '/') return isEnglish ? '/en/' : '/';
+        return (isEnglish ? '/en' : '') + path;
+    };
 
     const api = async (path, body) => {
         const response = await fetch(`/api/${path}`, {
@@ -45,7 +50,7 @@
                     if (button) button.setAttribute('aria-busy', 'true');
                     try {
                         await api('google-login', { credential: credential.credential });
-                        window.location.assign('/account');
+                        window.location.assign(localizedPath('/account'));
                     } catch (error) {
                         if (googleStatus) googleStatus.textContent = responseText(error);
                         if (button) button.removeAttribute('aria-busy');
@@ -190,7 +195,7 @@
             setBusy(button, true, busyText);
             try {
                 await api(endpoint, values);
-                window.location.assign(successPath);
+                window.location.assign(localizedPath(successPath));
             } catch (error) {
                 status.textContent = responseText(error);
             } finally {
@@ -219,7 +224,7 @@
         resetPasswordForm.addEventListener('submit', async event => {
             event.preventDefault(); status.textContent = '';
             const button = $('button[type="submit"]', resetPasswordForm); setBusy(button, true, 'Saving…');
-            try { const result = await api('password-reset/confirm', { token: resetPasswordForm.elements.token.value, password: resetPasswordForm.elements.password.value }); status.textContent = result.message; status.classList.add('success'); resetPasswordForm.elements.password.value = ''; window.setTimeout(() => window.location.assign('/login?reset=success'), 1500); }
+            try { const result = await api('password-reset/confirm', { token: resetPasswordForm.elements.token.value, password: resetPasswordForm.elements.password.value }); status.textContent = result.message; status.classList.add('success'); resetPasswordForm.elements.password.value = ''; window.setTimeout(() => window.location.assign(localizedPath('/login') + '?reset=success'), 1500); }
             catch (error) { status.textContent = responseText(error); status.classList.remove('success'); }
             finally { setBusy(button, false); }
         });
@@ -521,7 +526,7 @@
         logoutButton.disabled = true;
         try {
             await api('logout', {});
-            window.location.assign('/');
+            window.location.assign(localizedPath('/'));
         } catch (error) {
             logoutButton.disabled = false;
             logoutButton.textContent = responseText(error);
@@ -552,7 +557,7 @@
 
     const directoryForm = $('#directory-filter-form');
     $('#uni-sort')?.addEventListener('change', () => directoryForm?.requestSubmit());
-    $('#reset-filters')?.addEventListener('click', () => window.location.assign('/universities'));
+    $('#reset-filters')?.addEventListener('click', () => window.location.assign(localizedPath('/universities')));
 
     const bookingForm = $('#booking-form');
     if (bookingForm) {
@@ -846,7 +851,7 @@
                 $('[data-checkout-message]', checkoutSuccess).textContent = result.message;
             } catch (error) {
                 if (error.message.toLowerCase().includes('sign in') || error.message.toLowerCase().includes('account')) {
-                    window.location.assign('/login?next=pricing');
+                    window.location.assign(localizedPath('/login') + '?next=pricing');
                 } else {
                     let status = $('.checkout-error', checkoutForm);
                     if (!status) {
@@ -863,7 +868,7 @@
     }
 
     const languagePicker = $('#language-picker');
-    const supportedLanguages = ['en', 'hy', 'ru'];
+    const supportedLanguages = ['en', 'hy'];
     if (languagePicker) {
         // Keep the main interface wording reviewed and consistent. The remote
         // translator remains a fallback for university data and less common copy.
@@ -1030,8 +1035,9 @@
                 'Come say hello in Yerevan.': 'Будем рады видеть вас в Ереване.', 'Open pinned address in Google Maps ↗': 'Открыть адрес в Google Картах ↗'
             }
         };
-        const selected = localStorage.getItem('unipath-language') || 'en';
-        languagePicker.value = supportedLanguages.includes(selected) ? selected : 'en';
+        const isEnglishRoute = /^\/en(?:\/|$)/.test(window.location.pathname);
+        const selected = isEnglishRoute ? 'en' : 'hy';
+        languagePicker.value = supportedLanguages.includes(selected) ? selected : 'hy';
         const originalText = new WeakMap();
         const originalAttributes = new WeakMap();
         const knownTextNodes = new Map();
@@ -1124,17 +1130,26 @@
         };
         let activeLanguage = languagePicker.value;
         window.addEventListener('unipath:translate-visible', () => {
-            if (activeLanguage !== 'en') translatePage(activeLanguage);
+            if (activeLanguage === 'ru') translatePage(activeLanguage);
         });
         languagePicker.addEventListener('change', () => {
             const language = languagePicker.value;
             activeLanguage = language;
             localStorage.setItem('unipath-language', language);
+            if (language === 'hy' || language === 'en') {
+                const path = window.location.pathname;
+                const basePath = path.replace(/^\/en(?=\/|$)/, '') || '/';
+                const targetPath = language === 'en'
+                    ? '/en' + (basePath === '/' ? '/' : basePath)
+                    : basePath;
+                window.location.assign(targetPath + window.location.search + window.location.hash);
+                return;
+            }
             document.documentElement.lang = language;
             translatePage(language);
         });
-        if (languagePicker.value !== 'en') {
-            document.documentElement.lang = languagePicker.value;
+        if (languagePicker.value === 'ru') {
+            document.documentElement.lang = 'ru';
             translatePage(languagePicker.value);
         }
     }
