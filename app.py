@@ -11,6 +11,7 @@ import ssl
 import urllib.parse
 import urllib.request
 import uuid
+import xml.etree.ElementTree as ET
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
@@ -213,33 +214,82 @@ def shared_template_data():
     }
 
 
+def _compact_meta(value: str, limit: int) -> str:
+    value = " ".join(str(value).split())
+    if len(value) <= limit:
+        return value
+    shortened = value[: limit - 1].rsplit(" ", 1)[0].rstrip(" ,.;:—–-")
+    return (shortened or value[: limit - 1].rstrip()) + "…"
+
+
 def page(template: str, *, title: str, description: str, active: str = "", **context):
-    if not (request.path == "/en" or request.path.startswith("/en/")) and not request.path.startswith(("/api/", "/static/", "/images/", "/css/", "/js/", "/robots.txt", "/sitemap.xml")):
-        hy_titles = {
-            "index.html": "Սովորել արտերկրում․ համալսարաններ և ընդունելություն",
-            "universities.html": "Համալսարաններ և ծրագրեր արտերկրում",
-            "program.html": "Ուսումնական ծրագիր արտերկրում",
-            "about.html": "UniPath-ի մասին",
-            "services.html": "Աջակցություն արտերկրում ուսման դիմելու համար",
-            "contact.html": "Կապվել UniPath-ի հետ",
-            "login.html": "Մուտք գործել UniPath",
-            "register.html": "Ստեղծել UniPath հաշիվ",
-            "account.html": "Ձեր UniPath հաշիվը",
-            "admin.html": "UniPath-ի ադմինիստրացիա",
-            "checkout.html": "Ամրագրել խորհրդատվություն UniPath-ի հետ",
-            "forgot-password.html": "Վերականգնել UniPath-ի գաղտնաբառը",
-            "reset-password.html": "Սահմանել նոր գաղտնաբառ",
-        }
-        hy_descriptions = {
-            "index.html": "Համեմատեք արտասահմանյան համալսարաններն ու ուսումնական ծրագրերը, ուսումնասիրեք ուսման վարձը և ընդունելության պահանջները։ Առաջին հանդիպումն անվճար է։",
-            "universities.html": "Փնտրեք արտասահմանյան համալսարաններ ու ծրագրեր՝ ըստ երկրի, մասնագիտության, աստիճանի, ուսման վարձի և կրթաթոշակների։",
-            "about.html": "Իմացեք UniPath-ի և արտասահմանում սովորելու պլանավորման աջակցության մասին։",
-            "services.html": "Ծանոթացեք համալսարան ընտրելու, դիմումը պլանավորելու և կրթաթոշակներ ուսումնասիրելու UniPath ծառայություններին։ Առաջին հանդիպումն անվճար է։",
-            "contact.html": "Կապվեք UniPath-ի հետ արտասահմանյան համալսարանների և ընդունելության գործընթացի վերաբերյալ հարցերով։",
-        }
-        title = hy_titles.get(template, title)
-        description = hy_descriptions.get(template, description)
+    is_english = request.path == "/en" or request.path.startswith("/en/")
+    public_titles = {
+        "index.html": ("Study Abroad for Armenian Students", "Ուսում արտերկրում հայ ուսանողների համար"),
+        "universities.html": ("Study Abroad Programs & Universities", "Արտասահմանյան բուհերի ծրագրեր"),
+        "about.html": ("About UniPath Armenia", "UniPath Armenia-ի մասին"),
+        "services.html": ("Study Abroad Application Support", "Դիմումի աջակցություն արտերկրում"),
+        "contact.html": ("Contact UniPath Armenia", "Կապ UniPath Armenia-ի հետ"),
+        "login.html": ("Log in to UniPath", "Մուտք UniPath հաշիվ"),
+        "register.html": ("Create a UniPath account", "Ստեղծել UniPath հաշիվ"),
+        "account.html": ("Your UniPath account", "Ձեր UniPath հաշիվը"),
+        "admin.html": ("UniPath admin", "UniPath-ի ադմինիստրացիա"),
+        "checkout.html": ("Book UniPath guidance", "Ամրագրել խորհրդատվություն"),
+        "forgot-password.html": ("Reset your password", "Վերականգնել գաղտնաբառը"),
+        "reset-password.html": ("Choose a new password", "Սահմանել նոր գաղտնաբառ"),
+    }
+    public_descriptions = {
+        "index.html": (
+            "Compare study destinations, explore program examples and plan your next step. Your first UniPath consultation is free.",
+            "Համեմատեք ուսման ուղղություններն ու ծրագրերի օրինակները և պլանավորեք հաջորդ քայլը։ Առաջին հանդիպումն անվճար է։",
+        ),
+        "universities.html": (
+            "Filter program examples by country, subject, degree and tuition. Confirm current admissions and scholarship details with each university.",
+            "Զտեք ծրագրերի օրինակներն ըստ երկրի, մասնագիտության, աստիճանի ու վարձի։ Ընդունելության պայմանները ճշտեք համալսարանից։",
+        ),
+        "about.html": (
+            "Learn who UniPath Armenia supports and how the team helps students organize study-abroad applications.",
+            "Իմացեք՝ ում է աջակցում UniPath Armenia-ն և ինչպես է օգնում կազմակերպել արտասահմանյան բուհերի դիմումները։",
+        ),
+        "services.html": (
+            "Review UniPath guidance options for university shortlists, application planning and essay feedback. The first consultation is free.",
+            "Ծանոթացեք բուհերի ընտրության, դիմումի պլանավորման և էսսեի աջակցության տարբերակներին։ Առաջին հանդիպումն անվճար է։",
+        ),
+        "contact.html": (
+            "Contact UniPath Armenia in Yerevan about study destinations, university programs or application guidance.",
+            "Կապվեք UniPath Armenia-ի հետ՝ ուսման ուղղությունների, ծրագրերի կամ դիմումի աջակցության մասին հարցերով։",
+        ),
+        "login.html": ("Sign in to manage your saved universities and study plan.", "Մուտք գործեք՝ ձեր ընտրած բուհերն ու ուսման պլանը տեսնելու համար։"),
+        "register.html": ("Create an account to save programs and organize your study shortlist.", "Ստեղծեք հաշիվ՝ ծրագրերը պահպանելու և ձեր ցանկը կազմելու համար։"),
+        "account.html": ("Manage your profile, saved universities and study preferences.", "Կառավարեք ձեր պրոֆիլը, պահպանված բուհերն ու ուսման նախընտրությունները։"),
+        "admin.html": ("Sign in to the UniPath team workspace.", "Մուտք գործեք UniPath-ի թիմի աշխատանքային էջ։"),
+        "checkout.html": ("Review your selected UniPath guidance option and booking details.", "Ստուգեք ընտրված խորհրդատվության տարբերակն ու ամրագրման տվյալները։"),
+        "forgot-password.html": ("Request a secure link to reset your UniPath password.", "Պահանջեք անվտանգ հղում՝ UniPath-ի գաղտնաբառը վերականգնելու համար։"),
+        "reset-password.html": ("Choose a new password for your UniPath account.", "Սահմանեք նոր գաղտնաբառ ձեր UniPath հաշվի համար։"),
+    }
+
+    if not is_english:
+        if template in public_titles and template != "universities.html":
+            title = public_titles[template][1]
+        if template in public_descriptions and template != "universities.html":
+            description = public_descriptions[template][1]
+        if template == "program.html" and context.get("program"):
+            program = context["program"]
+            country_name = {"United States": "ԱՄՆ", "United Kingdom": "Միացյալ Թագավորություն", "South Korea": "Հարավային Կորեա", "Germany": "Գերմանիա", "Italy": "Իտալիա", "France": "Ֆրանսիա", "Spain": "Իսպանիա", "Canada": "Կանադա", "Australia": "Ավստրալիա", "Ireland": "Իռլանդիա", "China": "Չինաստան", "Scotland": "Շոտլանդիա"}.get(program["country"], program["country"])
+            title = f"{program['title']}՝ {program['university']}"
+            degree_name = {"Bachelor's": "բակալավրիատ", "Master's": "մագիստրատուրա", "PhD": "ասպիրանտուրա", "Doctorate": "դոկտորական"}.get(program["degree"], program["degree"])
+            description = f"{program['title']} ծրագիրը {program['university']}-ում՝ {program['city']}, {country_name}։ {degree_name}, մոտ ${program['annualTuitionUsd']:,}/տարի։ Պահանջները ճշտեք բուհից։"
         template = "hy/" + template
+    elif template in public_titles and template != "universities.html":
+        title = public_titles[template][0]
+        description = public_descriptions[template][0]
+    if template.endswith("program.html") and context.get("program") and is_english:
+        program = context["program"]
+        title = f"{program['title']} at {program['university']}"
+        description = f"{program['title']} at {program['university']} in {program['city']}, {program['country']}. {program['degree']} program, about ${program['annualTuitionUsd']:,}/year. Confirm current entry requirements with the university."
+
+    title = _compact_meta(title, 50)
+    description = _compact_meta(description, 155)
     return render_template(template, page_title=title, page_description=description, active=active, **context)
 
 
@@ -418,7 +468,27 @@ def account_page():
 @app.get("/robots.txt")
 def robots():
     base = PUBLIC_URL or request.url_root.rstrip("/")
-    return f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n", 200, {"Content-Type": "text/plain; charset=utf-8"}
+    body = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /api/\n"
+        "Disallow: /admin\n"
+        "Disallow: /login\n"
+        "Disallow: /register\n"
+        "Disallow: /forgot-password\n"
+        "Disallow: /reset-password\n"
+        "Disallow: /account\n"
+        "Disallow: /checkout\n"
+        "Disallow: /en/admin\n"
+        "Disallow: /en/login\n"
+        "Disallow: /en/register\n"
+        "Disallow: /en/forgot-password\n"
+        "Disallow: /en/reset-password\n"
+        "Disallow: /en/account\n"
+        "Disallow: /en/checkout\n"
+        f"Sitemap: {base}/sitemap.xml\n"
+    )
+    return body, 200, {"Content-Type": "text/plain; charset=utf-8"}
 
 
 @app.get("/google299c26865c7a81e0.html")
@@ -434,11 +504,37 @@ def bing_site_verification():
 @app.get("/sitemap.xml")
 def sitemap():
     base = PUBLIC_URL or request.url_root.rstrip("/")
-    armenian_urls = ["/", "/universities", "/services", "/about", "/contact"] + ["/programs/" + item["slug"] for item in PROGRAMS]
-    english_urls = [("/en/" if path == "/" else "/en" + path) for path in armenian_urls]
-    urls = armenian_urls + english_urls
-    xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-    xml += "".join(f"<url><loc>{base}{path}</loc></url>" for path in urls) + "</urlset>"
+    sitemap_ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
+    xhtml_ns = "http://www.w3.org/1999/xhtml"
+    ET.register_namespace("", sitemap_ns)
+    ET.register_namespace("xhtml", xhtml_ns)
+
+    armenian_paths = ["/", "/universities", "/services", "/about", "/contact"]
+    armenian_paths.extend("/programs/" + item["slug"] for item in PROGRAMS)
+    urlset = ET.Element(f"{{{sitemap_ns}}}urlset")
+
+    for hy_path in armenian_paths:
+        en_path = "/en/" if hy_path == "/" else "/en" + hy_path
+        for path in (hy_path, en_path):
+            url_node = ET.SubElement(urlset, f"{{{sitemap_ns}}}url")
+            ET.SubElement(url_node, f"{{{sitemap_ns}}}loc").text = base + path
+            for alternate_language, alternate_path in (("hy", hy_path), ("en", en_path)):
+                ET.SubElement(
+                    url_node,
+                    f"{{{xhtml_ns}}}link",
+                    {
+                        "rel": "alternate",
+                        "hreflang": alternate_language,
+                        "href": base + alternate_path,
+                    },
+                )
+            ET.SubElement(
+                url_node,
+                f"{{{xhtml_ns}}}link",
+                {"rel": "alternate", "hreflang": "x-default", "href": base + hy_path},
+            )
+
+    xml = ET.tostring(urlset, encoding="utf-8", xml_declaration=True)
     return xml, 200, {"Content-Type": "application/xml; charset=utf-8"}
 
 

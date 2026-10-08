@@ -19,6 +19,10 @@ Open [http://localhost:8080](http://localhost:8080). The local admin page is `/a
 
 Or double-click `run-windows.bat` to create the virtual environment, install dependencies and launch the app. Set environment variables first if you want a non-demo admin password, Google sign-in or email.
 
+### Run Lighthouse locally
+
+Lighthouse can audit the local site; the Flask server must be running during the audit. Double-click `run-windows.bat`, wait for the browser to open `http://127.0.0.1:8080/`, then open Chrome DevTools (`F12`) → **Lighthouse** → **Analyze page load**. Keep the separate server window open until the audit finishes. If Chrome says it cannot reach localhost, start the app first and use `http://127.0.0.1:8080/` instead of opening the HTML files directly.
+
 ## Features
 
 - Responsive home, destination/program finder, program details, services, About, contact, sign-in, registration, account and admin pages.

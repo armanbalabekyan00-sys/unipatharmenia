@@ -411,11 +411,9 @@ h1 em, h2 em { color: var(--blue); font-style: normal; }
 .promo-apply:hover { background: #edf3ff; color: var(--blue-dark); }
 .promo-response { min-height: 18px; margin: -10px 0 0; color: #a33a4b; font-size: 12px; }
 .promo-response.success { color: var(--green); }
-body { animation: page-enter .25s ease-out both; }
 .site-header { position: sticky; top: 0; }
 .button, .price-card, .uni-card, .saved-university-card, .program-card, .contact-form, .account-panel { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .2s ease; }
 .button:focus-visible, a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #81aaff; outline-offset: 3px; }
-@keyframes page-enter { from { opacity: 0; } to { opacity: 1; } }
 @keyframes chat-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes service-card-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
